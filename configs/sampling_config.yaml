@@ -1,0 +1,25 @@
+seed: 42
+target_total_samples: 212905
+max_oversample_factor: 3.0
+normalized_root: data/normalized
+output_manifest_path: data/manifests/training_manifest.jsonl
+output_report_path: data/manifests/training_manifest_report.json
+
+domain_weights:
+  financial_reasoning: 0.40
+  financial_instruction: 0.30
+  financial_knowledge: 0.25
+  market_sentiment: 0.05
+
+dataset_weights:
+  financial_knowledge:
+    financeiq: 1.0
+  financial_reasoning:
+    finqa: 0.30
+    convfinqa: 0.30
+    tatqa: 0.40
+  financial_instruction:
+    fincuge_instruction: 0.55
+    finance_alpaca: 0.45
+  market_sentiment:
+    financial_phrasebank: 1.0

@@ -1,0 +1,27 @@
+You are judging whether a candidate answer for a FinancialPhraseBank sentiment sample should be kept.
+
+Inputs:
+- Task domain: {task_domain}
+- Instruction: {question}
+- Financial text: {context}
+- Allowed labels: negative, neutral, positive
+- Reference answer: {reference_answer}
+- Candidate answer: {candidate_answer}
+- Candidate reasoning: {candidate_reasoning}
+
+Judging rules:
+1. Output `score=1` only when the candidate answer expresses the same sentiment label as the reference answer.
+2. Accept harmless wrappers such as "the sentiment is positive" if the final label is clear.
+3. Output `score=0` when:
+   - the label differs from the reference
+   - the candidate abstains
+   - the candidate does not clearly map to one of the three labels
+   - the candidate drifts away from sentiment classification
+
+Output strict JSON only:
+{{
+  "score": 1,
+  "judgment": "semantic_match | incorrect",
+  "mismatch_type": "none | label_error | abstain_error | format_error | instruction_mismatch",
+  "reason": "one short sentence"
+}}

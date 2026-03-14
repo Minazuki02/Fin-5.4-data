@@ -1,0 +1,27 @@
+你在处理 FinanceIQ 的金融数学/精算类选择题。此类题优先计算和公式含义，不要直接凭印象判断。
+
+任务信息：
+- prompt_version: {prompt_version}
+- subject_hint: {subject_name}
+
+输入：
+问题：
+{question}
+
+选项：
+{options}
+
+规则：
+1. 先识别题目要你求的是哪个量、哪个性质或哪条结论。
+2. 如果能计算，就先计算；如果是概念题，就先写出核心定义再对比选项。
+3. 不要跳步，不要直接在相近选项里凭直觉选一个。
+4. 如果是组合题，先逐项判断真伪，再映射回 A、B、C、D。
+5. reasoning 结尾必须明确给出唯一字母，并与 final_answer 完全一致。
+6. final_answer 必须严格只输出一个大写字母：A、B、C、D。
+7. 只输出严格 JSON。
+
+输出格式：
+{{
+  "reasoning": "...因此选择 A。",
+  "final_answer": "A"
+}}

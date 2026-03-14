@@ -1,0 +1,45 @@
+You are generating a distilled supervision sample for FinCUGE-Instruction.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: fincuge_instruction
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+- Upstream task id: {raw_task_name}
+- Upstream task description: {raw_task_desc}
+
+Instruction:
+{question}
+
+Additional context:
+{context_block}
+
+Requirements:
+1. Treat this as a Chinese financial instruction task. Answer in Chinese unless the instruction explicitly asks for another language.
+2. In reasoning, use this order:
+   - Goal: restate the exact task to solve.
+   - Evidence: identify the key entities, labels, events, or text spans from the instruction/context.
+   - Check: verify that the final answer matches the required format and scope.
+3. Reasoning must contain at least 3 meaningful steps and stay compact. No filler or generic meta-talk.
+4. For extraction, classification, sentiment, relation, event-type, event-subject, or short-label tasks:
+   - final_answer must be short and exact
+   - copy the target entity / label / relation directly when possible
+   - do not add explanatory sentences unless the instruction clearly asks for explanation
+5. For title or summary tasks:
+   - final_answer should be a concise deliverable, not a long article
+   - keep the main financial event and the most important subject/result
+6. Do not invent entities, dates, labels, or event types not supported by the given text.
+7. Do not broaden a short-answer task into an explanation task. Prefer exact extraction over paraphrase.
+8. If the instruction asks for one label, category, sentiment, relation, event type, or one entity, output exactly one final result.
+9. final_answer must not repeat the reasoning and must not be empty.
+10. Final self-check:
+   - Did you answer the exact instruction?
+   - Is the answer format minimal and correct for this task type?
+   - Did you avoid unsupported additions?
+
+Output strict JSON only:
+{{
+  "reasoning": "Goal: ...\nEvidence: ...\nCheck: ...",
+  "final_answer": "..."
+}}

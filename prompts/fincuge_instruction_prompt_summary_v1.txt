@@ -1,0 +1,36 @@
+You are generating a distilled supervision sample for FinCUGE-Instruction.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: fincuge_instruction
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+- Upstream task id: {raw_task_name}
+- Upstream task description: {raw_task_desc}
+
+Instruction:
+{question}
+
+Additional context:
+{context_block}
+
+Requirements:
+1. This route is only for title/summary-style tasks. Answer in Chinese.
+2. In reasoning, use this order:
+   - Goal: identify whether the task asks for a title or a short summary.
+   - Evidence: extract the main subject, the key financial event, and the main result or impact.
+   - Check: verify that final_answer is concise, faithful, and does not add speculation.
+3. final_answer must be the requested artifact directly:
+   - title task: output one concise headline
+   - summary task: output one short summary sentence or very short summary
+4. Keep the core subject and the core event/result. Do not drift to side details.
+5. Do not invent causes, future outcomes, or extra facts not supported by the text.
+6. Do not over-explain. final_answer should look like a dataset target, not an article.
+7. If the source text contains a clear negative or positive result, preserve that direction in the output.
+
+Output strict JSON only:
+{{
+  "reasoning": "Goal: ...\nEvidence: ...\nCheck: ...",
+  "final_answer": "..."
+}}

@@ -1,0 +1,65 @@
+You are generating a distilled supervision sample for FinCUGE-Instruction.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: fincuge_instruction
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+- Upstream task id: {raw_task_name}
+- Upstream task description: {raw_task_desc}
+
+Instruction:
+{question}
+
+Additional context:
+{context_block}
+
+Requirements:
+1. Treat this as a Chinese financial instruction task. Answer in Chinese unless the instruction explicitly asks for another language.
+2. In reasoning, use this order:
+   - Goal: restate the exact target field / label / artifact required by the instruction.
+   - Evidence: locate the exact supporting span, clue, or label inventory from the text.
+   - Check: verify that final_answer uses the required dataset-style output format.
+3. Reasoning must contain at least 3 meaningful steps, but stay compact and avoid repeating the final answer.
+4. For short-answer tasks, final_answer must be minimal and exact. Do not turn extraction/classification tasks into explanations.
+5. If the task asks for one entity, one label, one relation, one event type, one sentiment, or one category, output exactly one result.
+6. Do not invent or generalize. Prefer copying the exact target span or exact dataset label from the text when possible.
+
+Task-specific rules:
+7. If the upstream task is `FINFE` (sentiment):
+   - final_answer must use exactly one label from: `积极` / `消极` / `中性`
+   - do not output synonyms such as `正面`, `负面`, `偏多`, `偏空`
+8. If the upstream task is `FINNL` (news classification):
+   - choose the single best matching category unless the instruction explicitly requires multiple labels
+   - prefer the dataset category inventory exactly, such as `公司`, `行业`, `大盘`, `政策`, `新冠`, `能源`
+   - do not add extra categories beyond the best answer
+9. If the upstream task is `FINRE` (relation extraction):
+   - output the dataset relation label exactly
+   - do not paraphrase relation labels
+   - examples of the required style: `持股`, `减持`, `自己`, `拥有`, `被分析`
+10. If the upstream task is `FINCQA` (causal event extraction):
+   - output the canonical causal event label only
+   - do not output a reasoning chain, arrows, numbered steps, or multiple clauses
+   - when the question asks “有哪些因果事件”, still output the dataset-style canonical answer string only
+11. If the upstream task is `FINQA` or `FINESE` (event / subject extraction):
+   - answer only the field asked by the question, not a nearby entity or broader explanation
+   - if the target information is missing, use a short missing-information answer such as `暂无明确信息说明。`
+12. If the upstream task is `FINNSP` (negative entity recognition):
+   - output only the negative financial entity or entities
+   - exclude non-financial organizations, regulators, or narrative context unless they are the negative entity itself
+   - if multiple entities are required, join them compactly with `;`
+13. If the upstream task is `FINNA` (title/summary):
+   - final_answer should be a concise title or summary deliverable
+   - keep the main financial subject and key event/result, without adding unsupported speculation
+
+Final self-check:
+14. Did you answer the exact requested field or label instead of a nearby concept?
+15. Does final_answer follow the dataset's canonical style for this task?
+16. Is the answer as short as possible while still correct?
+
+Output strict JSON only:
+{{
+  "reasoning": "Goal: ...\nEvidence: ...\nCheck: ...",
+  "final_answer": "..."
+}}

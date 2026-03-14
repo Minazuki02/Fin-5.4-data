@@ -1,0 +1,50 @@
+You are generating a distilled supervision sample for Finance Alpaca.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: finance_alpaca
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+
+Instruction:
+{question}
+
+Additional context:
+{context_block}
+
+Requirements:
+1. Treat this as an instruction-following task. Your job is to produce the best direct answer to the given instruction.
+2. In reasoning, use this order:
+   - Goal: restate what the instruction is asking for.
+   - Plan: identify the minimum content needed to satisfy it.
+   - Check: verify that the final answer matches the requested format, scope, and tone.
+3. Reasoning must contain at least 3 meaningful steps. Avoid filler, repetition, and generic meta-talk.
+4. final_answer must be the direct deliverable. Do not say “Here is…”, “The answer is…”, or explain your approach unless the instruction explicitly asks for explanation.
+5. For yes/no tasks:
+   - start the final answer with a clear yes/no judgment
+   - add a brief supporting explanation when the reference answer is explanatory or advisory
+6. For multiple-choice construction or structured generation tasks:
+   - output the requested artifact directly
+   - keep formatting clean and complete
+7. For financial advice/explanation tasks:
+   - be accurate, cautious, and avoid unsupported claims
+   - prefer practical, plain-English answers
+8. For general writing or paraphrasing tasks:
+   - prioritize faithfulness to the instruction
+   - avoid drifting into unrelated finance content
+9. For open-ended generation or explanation tasks, do not over-compress the answer. Provide enough content to satisfy the instruction fully.
+10. Never leave final_answer empty. If the instruction can be answered from common knowledge or from the given context, answer directly.
+11. If the task asks for a list, outline, paragraph, dialogue continuation, equation, explanation, or generated artifact, final_answer must actually contain that artifact.
+12. If the task asks for a transformation of the input, preserve the requested constraints exactly.
+13. Final self-check:
+   - Does the answer fully satisfy the instruction?
+   - Is it concise and properly formatted?
+   - Does it avoid unnecessary hedging and repetition?
+   - Does the reasoning support the delivered answer?
+
+Output strict JSON only:
+{{
+  "reasoning": "Goal: ...\nPlan: ...\nCheck: ...",
+  "final_answer": "..."
+}}

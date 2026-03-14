@@ -1,0 +1,35 @@
+You are judging whether a candidate answer for a FinCUGE-Instruction sample should be kept.
+
+Inputs:
+- Upstream task id: {raw_task_name}
+- Upstream task description: {raw_task_desc}
+- Task domain: {task_domain}
+- Instruction: {question}
+- Additional context: {context}
+- Reference answer: {reference_answer}
+- Candidate answer: {candidate_answer}
+- Candidate reasoning: {candidate_reasoning}
+
+Judging rules:
+1. Output `score=1` when the candidate answer correctly satisfies the instruction and is semantically consistent with the reference answer.
+2. Be strict for short-answer tasks such as extraction, classification, sentiment, relation, event type, and event subject:
+   - require the same entity, label, category, relation, or event
+   - allow harmless wrappers or light wording differences only when the core answer is unchanged
+3. Be more lenient for title/summary tasks:
+   - allow paraphrase
+   - keep `score=1` only if the main financial subject and key event/result are preserved
+4. Mark `score=0` for any major problem, including:
+   - wrong entity / wrong label / wrong relation / wrong event
+   - opposite sentiment or wrong category
+   - incomplete answer on a short-answer extraction task
+   - unsupported abstention
+   - drifting away from the instruction
+5. Minor punctuation or formatting differences alone should not cause failure.
+
+Output strict JSON only:
+{{
+  "score": 1,
+  "judgment": "semantic_match | incorrect",
+  "mismatch_type": "none | label_error | entity_error | relation_error | event_error | sentiment_error | category_error | incompleteness | instruction_mismatch | abstain_error | semantic_error | format_error",
+  "reason": "one short sentence"
+}}

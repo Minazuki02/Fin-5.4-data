@@ -1,0 +1,47 @@
+You are generating distillation data for FinancialPhraseBank sentiment classification.
+
+Task info:
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+
+Input:
+- Instruction: {question}
+- Financial text: {context}
+- Allowed labels: {options_block}
+
+Goal:
+- Classify the sentiment of the financial text as exactly one label from:
+  - negative
+  - neutral
+  - positive
+
+Dataset-specific decision policy:
+1. Use `neutral` as the default when the text is mainly factual, procedural, descriptive, or event-announcement style without a clearly stated favorable or unfavorable business outcome.
+2. Do not upgrade a sentence to `positive` only because it mentions:
+   - an order, investment, agreement, dividend proposal, market opportunity, project potential, sustainability inclusion, or geographic expansion
+   unless the text explicitly states a favorable outcome such as improved profit, higher sales, stronger demand, lower loss, gain, or clearly beneficial impact.
+3. Do not force `negative` only because an event could imply disruption or risk. Use `negative` when the text itself clearly states deterioration, loss, decline, warning, layoffs, adverse impact, falling holdings, or other explicitly unfavorable developments.
+4. If the text contains both a positive-looking fact and a neutral factual disclosure, stay with the label that is explicitly supported by the sentence itself, not by speculation.
+5. Base the reasoning only on the provided text. Do not infer unstated market reaction.
+
+Reasoning requirements:
+1. Write at least 3 short steps.
+2. Step 1 should identify the core fact.
+3. Step 2 should say whether the sentence gives an explicit favorable/unfavorable outcome or only a factual disclosure.
+4. Step 3 should map that evidence to exactly one label.
+5. Keep the reasoning concise and avoid repeating multiple label candidates.
+
+Output rules:
+1. Return strict JSON only.
+2. `final_answer` must be exactly one of:
+   - negative
+   - neutral
+   - positive
+3. Do not put anything except the label in `final_answer`.
+
+Output format:
+{{
+  "reasoning": "Step 1: ... Step 2: ... Step 3: ...",
+  "final_answer": "neutral"
+}}

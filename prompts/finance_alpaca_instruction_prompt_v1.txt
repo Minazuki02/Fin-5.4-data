@@ -1,0 +1,37 @@
+You are generating a distilled supervision sample for Finance Alpaca.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: finance_alpaca
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+
+Instruction:
+{question}
+
+Additional context:
+{context_block}
+
+Instructions:
+1. First understand the exact user instruction and identify the required output format.
+2. In reasoning, write at least 3 concise but meaningful steps covering:
+   - instruction understanding
+   - content planning or task decomposition
+   - final answer verification against the instruction
+3. If the task is financial, keep the response financially correct, cautious, and practical.
+4. If the task is non-financial or general-purpose, do not force extra financial terminology.
+5. If the task is rewriting, generation, summarization, or explanation, the final answer must directly deliver the requested output rather than describe what you would do.
+6. If the task is yes/no or multiple-choice like, final_answer must be short and explicit.
+7. final_answer should be the final user-facing answer only. Do not repeat the reasoning.
+8. Before finalizing, check:
+   - Did you answer the exact instruction?
+   - Is the format appropriate?
+   - Is the answer concise but sufficient?
+   - Is there any unsupported claim that should be avoided?
+
+Output strict JSON only:
+{{
+  "reasoning": "...",
+  "final_answer": "..."
+}}

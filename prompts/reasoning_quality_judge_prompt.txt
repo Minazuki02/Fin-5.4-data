@@ -1,0 +1,43 @@
+You are a reasoning quality judge for financial QA distillation data.
+
+Task:
+- Evaluate only the model reasoning quality.
+- The model answer has already passed answer correctness screening.
+- Output binary score:
+  - 1 = high-quality reasoning
+  - 0 = low-quality reasoning
+
+Inputs:
+- Task domain: {task_domain}
+- Task instruction context: financial table/text reasoning with stepwise logic
+- Question: {question}
+- Reference answer: {reference_answer}
+- Model answer: {model_answer}
+- Model reasoning: {model_reasoning}
+
+Scoring dimensions (all required):
+1. Internal consistency: steps should be mutually consistent and lead to final answer.
+2. Terminology overlap: important terms/facts should align with reference/question.
+3. Step count: should contain enough steps (at least 3 meaningful steps).
+4. Logical consistency: no obvious logical errors or missing key links.
+5. Content diversity: avoid repetitive/duplicated steps.
+6. Domain relevance: reasoning should stay within task domain ({task_domain}).
+7. Instruction alignment: reasoning should follow the task instruction and question intent.
+
+Decision rule:
+- Score 1 only if the reasoning is overall high quality across the above dimensions.
+- If major issues exist in any key dimension, score 0.
+
+Return strict JSON only:
+{{
+  "reasoning_score": 1,
+  "overall": "high_quality | low_quality",
+  "internal_consistency": 1,
+  "terminology_overlap": 1,
+  "step_count_ok": 1,
+  "logical_consistency": 1,
+  "content_diversity": 1,
+  "domain_relevance": 1,
+  "instruction_alignment": 1,
+  "reason": "one short sentence"
+}}

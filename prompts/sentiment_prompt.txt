@@ -1,0 +1,32 @@
+你是金融情绪分类训练数据生成器。请基于给定文本判断其金融情绪，并生成一条可用于后续自动校验的样本。
+
+任务信息：
+- 任务类型：{task_type}
+- 任务领域：{task_domain}
+- 语言：{language}
+
+输入：
+任务：{question}
+文本：{context}
+
+要求：
+1. reasoning 简要说明情绪判断依据，例如收益预期、风险表述、利好/利空措辞、市场倾向。
+2. reasoning 保持简洁，不要展开成长段分析。
+3. final_answer 必须只输出以下三个标签之一：
+   - negative
+   - neutral
+   - positive
+4. 不要输出近义词，不要输出解释到 final_answer 中。
+5. 不要把最终标签埋在 reasoning 中间；标签只放在 final_answer。
+6. 如果文本信息不足以明确判断，也必须在三类标签中选择最合理的一类，并在 reasoning 中简要说明原因。
+
+你必须只输出严格 JSON，格式如下：
+{{
+  "reasoning": "...",
+  "final_answer": "..."
+}}
+
+额外要求：
+- 不要输出 markdown
+- 不要输出多余字段
+- final_answer 必须存在

@@ -1,0 +1,29 @@
+You are judging whether a candidate answer for a FinanceIQ question should be kept.
+
+Inputs:
+- Task domain: {task_domain}
+- Question: {question}
+- Options:
+{options_block}
+- Reference answer: {reference_answer}
+- Candidate answer: {candidate_answer}
+- Candidate reasoning: {candidate_reasoning}
+
+Judging rules:
+1. Output `score=1` only when the candidate answer is correct.
+2. For multiple-choice questions, accept the candidate when it selects the same option as the reference answer, even if it includes harmless wrappers such as "答案是A" or repeats the option text.
+3. For true/false or judgment questions, accept the candidate only when the judgment direction matches the reference answer.
+4. Be strict about answer correctness. Do not give credit for partial reasoning if the final answer is wrong.
+5. Mark `score=0` for any major issue, including:
+   - wrong option or wrong judgment
+   - unsupported abstention
+   - answer that does not clearly identify a final option/judgment
+   - drifting away from the question
+
+Output strict JSON only:
+{{
+  "score": 1,
+  "judgment": "semantic_match | incorrect",
+  "mismatch_type": "none | option_error | judgment_error | abstain_error | format_error | instruction_mismatch | semantic_error",
+  "reason": "one short sentence"
+}}

@@ -1,0 +1,56 @@
+You are producing distilled supervision for FinQA, a financial reasoning dataset with table-text evidence and gold answers that often reflect a precise executable target.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: FinQA
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+
+Question:
+{question}
+
+Primary context:
+{context_block}
+
+Relevant metadata:
+{metadata_block}
+
+Instructions:
+1. Solve the exact dataset question, not a more natural alternative finance question. If the wording is awkward, still answer the most directly supported target from the provided evidence.
+2. Use only provided evidence. Do not invent missing facts. But if a result can be computed from the given numbers, do not answer "cannot be determined".
+3. Write reasoning in this order:
+   - Evidence: quote the exact figures or facts used.
+   - Derivation/Calculation: show the arithmetic or logical comparison.
+   - Check: verify sign, units, percentage/ratio form, and that the result answers the asked target.
+   - Conclusion: restate the final result briefly.
+4. Be conservative about reinterpretation:
+   - Do not replace the asked target with a secondary estimate.
+   - Do not switch from percentage to count, or from count to percentage, unless the question explicitly asks for that form.
+   - For yes/no questions, compute the two compared quantities first when needed, then answer yes or no.
+5. Preserve dataset-style answer conventions:
+   - For "change", "difference", or "net change", keep the sign from target period minus base period unless the question explicitly asks for magnitude only.
+   - Use "%" only when the question asks for percent, percentage, rate, share, proportion, return, margin, or basis-point-derived percentage.
+   - Use basis points only when the question asks for basis points.
+   - Keep the original unit scale unless the question explicitly asks to convert units. Do not convert between thousands/millions/billions unless requested.
+   - If the question asks for a ratio, return the ratio value, not a narrative sentence.
+6. If table/text wording and direct computation seem to disagree, prefer the computation that is most directly supported by the figures tied to the question.
+7. final_answer must be very short. Output only the final value, label, or yes/no answer. Do not include explanation or multiple alternatives.
+8. Before finalizing, self-check:
+   - Did you answer the exact target asked in the question?
+   - Is the sign correct?
+   - Is the percentage/count/ratio form correct?
+   - Did you preserve the requested unit scale?
+   - Does final_answer match the last step of the reasoning?
+9. Only if the provided evidence truly cannot support the target at all, output "cannot be determined".
+
+Output requirements:
+- Return strict JSON only.
+- Do not output markdown.
+- Do not output extra keys.
+
+Required JSON format:
+{{
+  "reasoning": "Evidence: ...\nDerivation/Calculation: ...\nCheck: ...\nConclusion: ...",
+  "final_answer": "..."
+}}

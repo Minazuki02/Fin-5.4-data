@@ -1,0 +1,53 @@
+You are scoring the quality of a reasoning trace for a financial task.
+
+Task:
+- Score whether the reasoning trace is high-quality (`score=1`) or low-quality (`score=0`).
+- The candidate answer is already considered answer-consistent from the previous filtering stage.
+- Focus on the quality of the reasoning trace itself.
+
+Inputs:
+- Task domain: {task_domain}
+- Task instruction / question: {question}
+- Reference answer: {reference_answer}
+- Candidate answer: {candidate_answer}
+- Candidate reasoning: {candidate_reasoning}
+
+Scoring criteria:
+1. Internal consistency:
+   Check whether the reasoning steps are mutually consistent and whether they can logically derive the reference answer step by step.
+2. Term overlap:
+   Check whether the reasoning uses terms, entities, financial items, metrics, or labels that overlap well with the reference answer and the question. Higher overlap is better.
+3. Number of reasoning steps:
+   Check whether the reasoning contains enough meaningful steps. Fewer than 3 meaningful steps should usually fail.
+4. Logical consistency:
+   Check whether the reasoning is logically aligned with the reference answer and whether there are obvious mistakes, jumps, or omissions.
+5. Content diversity:
+   Check whether the reasoning avoids excessive repetition. Repeated restatements without new information should lower the score.
+6. Task-domain relevance:
+   Check whether the reasoning clearly reflects the given financial task domain.
+7. Task-instruction alignment:
+   Check whether the reasoning directly addresses the specific instruction/question rather than drifting to other content.
+
+Scoring rule:
+- Output `score=1` only when the reasoning is overall high-quality.
+- Output `score=0` when there is any major flaw, including:
+  - inconsistent or contradictory steps
+  - wrong or weak logical derivation
+  - fewer than 3 meaningful steps
+  - strong repetition
+  - poor domain relevance
+  - weak alignment with the task instruction
+- Minor wording issues are acceptable if the reasoning is still strong.
+
+Output strict JSON only:
+{{
+  "score": 1,
+  "internal_consistency": 1,
+  "term_overlap": 1,
+  "step_count_ok": 1,
+  "logical_consistency": 1,
+  "content_diversity": 1,
+  "domain_relevance": 1,
+  "instruction_alignment": 1,
+  "reason": "one short sentence explaining the decision"
+}}

@@ -1,0 +1,47 @@
+You are producing distilled supervision for TAT-QA, a financial table-and-paragraph joint reasoning task.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: TAT-QA
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+
+Question:
+{question}
+
+Context (table + paragraphs):
+{context_block}
+
+Reasoning-relevant metadata:
+{metadata_block}
+
+Instructions:
+1. Use only provided evidence from the table/paragraphs/metadata. Do not invent facts.
+2. Reason in this exact structure:
+   - Evidence: cite exact values/text used.
+   - Derivation/Calculation: show comparison/arithmetic if needed.
+   - Check: verify unit, percent format, decimal precision, sign, and that final_answer equals the conclusion result.
+   - Conclusion: one short sentence with the final result.
+3. TAT-QA may require combining table and paragraph evidence. If both matter, explicitly use both.
+4. Negative numbers must use a leading minus sign (for example, -5585). Do not use parentheses in final_answer.
+5. final_answer style rules:
+   - If answer is a single number: output only the signed number (no explanation).
+   - If answer is a percentage question: output numeric percentage value without "%" unless the question explicitly requires the symbol.
+   - If answer has multiple values/spans: output all values in question order using " | " as separator.
+   - If answer is text/span: output the shortest exact phrase that answers the question.
+   - Do not add extra words like "approximately", "increase", "decrease", "yes/no explanation" unless required by the question.
+6. Preserve required units only when they are part of the actual answer phrase; otherwise avoid appending unit explanations in final_answer.
+7. If evidence is truly insufficient, output exactly "cannot be determined". Do not abstain when answerable.
+8. Do not copy any reference answer and do not output any extra fields.
+
+Output requirements:
+- Return strict JSON only.
+- Do not output markdown.
+- Do not output keys other than reasoning and final_answer.
+
+Required JSON format:
+{{
+  "reasoning": "Evidence: ...\nDerivation/Calculation: ...\nCheck: ...\nConclusion: ...",
+  "final_answer": "..."
+}}

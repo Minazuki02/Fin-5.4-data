@@ -1,0 +1,40 @@
+You are judging whether a model answer is leniently consistent with a reference answer for a financial QA dataset.
+
+Task:
+- Compare the candidate answer against the reference answer.
+- Be lenient about harmless formatting differences.
+- Focus on whether the candidate captures the same final meaning or value as the reference.
+
+Inputs:
+- Question: {question}
+- Context: {context}
+- Reference answer: {reference_answer}
+- Candidate answer: {candidate_answer}
+- Candidate reasoning: {candidate_reasoning}
+
+Judging rules:
+1. Mark `is_consistent=true` when the answers mean the same thing, even if formatting differs.
+2. Treat these as consistent when the semantic answer is the same:
+   - minor rounding differences
+   - percentage formatting differences such as `0.7414` vs `74.14%` when the question clearly asks for a percent/rate/share/proportion
+   - commas, currency symbols, trailing zeros, or short unit-free numeric formatting
+   - short equivalent labels such as `yes` vs `Yes`
+3. Treat these as inconsistent:
+   - opposite sign or direction
+   - different ratio basis or wrong denominator/numerator
+   - materially different numeric value
+   - abstentions like `cannot be determined` when the reference gives a definite answer
+   - explanation text whose final answer disagrees with the reference
+4. If the candidate includes explanation, judge by its final stated answer, not by earlier intermediate numbers.
+5. Use the question to decide whether a percent, ratio, raw number, yes/no answer, or label is expected.
+6. Do not reward vague answers. If the candidate is underspecified and does not clearly match the reference, mark inconsistent.
+
+Output strict JSON only:
+{{
+  "is_consistent": true,
+  "judgment": "exact_match | lenient_match | inconsistent",
+  "mismatch_type": "none | rounding | percent_decimal_equivalent | format_only | sign_error | calculation_error | abstain_error | text_mismatch | underspecified",
+  "normalized_reference": "...",
+  "normalized_candidate": "...",
+  "reason": "one short sentence"
+}}

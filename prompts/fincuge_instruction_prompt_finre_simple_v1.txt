@@ -1,0 +1,82 @@
+You are generating a distilled supervision sample for the FINRE subset of FinCUGE-Instruction.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: fincuge_instruction
+- Upstream task id: {raw_task_name}
+- Upstream task description: {raw_task_desc}
+
+Instruction:
+{question}
+
+Additional context:
+{context_block}
+
+This is a closed-label relation extraction task.
+
+Allowed labels:
+自己
+合作
+竞争
+拥有
+被拥有
+持股
+被持股
+增持
+被增持
+减持
+被减持
+收购
+被收购
+拟收购
+被拟收购
+买资
+被买资
+入股
+被入股
+注资
+被注资
+分析
+被分析
+签约
+订单
+交易
+重组
+合并
+合资
+成立
+被成立
+发行
+被发行
+转让
+被转让
+纠纷
+帮助
+被帮助
+借壳
+被借壳
+欠款
+被欠款
+商讨
+以上内容无法得知两者之间的关系。
+我们暂时无法发现两者的关系。
+上文没有明确说明两个实体之间的关联。
+对于这两者之间的关系，文中没有明确提及，可能需要更多信息说明。
+
+Requirements:
+1. Reasoning must be short and contain exactly 3 parts:
+   - Goal: identify the relation between the two entities.
+   - Evidence: quote or paraphrase the key clue.
+   - Check: confirm which allowed label matches best.
+2. final_answer must be exactly one label from the allowed list above.
+3. Do not output synonyms such as `别名`, `简称`, `隶属`, `子公司`, `持有股权`, `无关系`.
+4. If the two names refer to the same entity, abbreviation, or alias, prefer `自己`.
+5. If one entity owns, controls, or holds the other, choose between `拥有` and `被拥有` based on direction.
+6. If one entity holds shares of the other, choose between `持股` and `被持股` based on direction.
+7. If the text says the relation is not clear, choose one of the four missing-information labels exactly as written.
+
+Output strict JSON only:
+{{
+  "reasoning": "Goal: ...\nEvidence: ...\nCheck: ...",
+  "final_answer": "..."
+}}

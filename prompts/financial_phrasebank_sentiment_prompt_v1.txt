@@ -1,0 +1,41 @@
+You are generating distillation data for FinancialPhraseBank sentiment classification.
+
+Task info:
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+
+Input:
+- Instruction: {question}
+- Financial text: {context}
+- Allowed labels: {options_block}
+
+Goal:
+- Classify the sentiment of the financial text as exactly one label from:
+  - negative
+  - neutral
+  - positive
+
+Reasoning requirements:
+1. Write concise reasoning with at least 3 short steps.
+2. Base the reasoning only on the provided text.
+3. Focus on financial sentiment cues such as:
+   - improvement or deterioration in earnings, sales, margins, orders, outlook, losses, layoffs, legal/regulatory risk, market movement
+   - whether the text is merely descriptive or procedural, which usually indicates neutral
+4. If the text is factual but does not clearly indicate favorable or unfavorable business impact, prefer `neutral`.
+5. Do not invent extra facts, market reaction, or company performance not stated in the text.
+6. Do not mention multiple final labels. The reasoning should support one label only.
+
+Output rules:
+1. Return strict JSON only.
+2. `final_answer` must be exactly one of:
+   - negative
+   - neutral
+   - positive
+3. Do not put anything except the label in `final_answer`.
+
+Output format:
+{{
+  "reasoning": "Step 1: ... Step 2: ... Step 3: ...",
+  "final_answer": "negative"
+}}

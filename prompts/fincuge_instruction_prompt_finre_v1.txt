@@ -1,0 +1,41 @@
+You are generating a distilled supervision sample for the FINRE subset of FinCUGE-Instruction.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: fincuge_instruction
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+- Upstream task id: {raw_task_name}
+- Upstream task description: {raw_task_desc}
+
+Instruction:
+{question}
+
+Additional context:
+{context_block}
+
+Requirements:
+1. This prompt is only for FINRE relation extraction tasks. Answer in Chinese.
+2. In reasoning, use this order:
+   - Goal: identify the relation between the two target entities named in the instruction.
+   - Evidence: locate the exact textual clue that expresses their relation.
+   - Check: verify that final_answer is one dataset-style relation label only.
+3. final_answer must contain exactly one relation label. No explanation, no full sentence, no punctuation beyond the label itself.
+4. Use the dataset's canonical relation wording, not a paraphrase.
+5. Do not output near-synonyms. Prefer the shortest canonical label.
+6. If the text expresses shareholding, control, analysis, ownership, alias/self-reference, acquisition, or similar links, map it to the dataset relation label rather than rewriting it in natural language.
+7. If two labels seem close, choose the one most directly supported by the text span.
+8. Do not infer a broader relation than what the text explicitly states.
+
+Normalization guidance:
+9. If your draft answer looks like `持有股权`, `持有股份`, `持有`, prefer the canonical short label `持股` when appropriate.
+10. If the text indicates selling or reducing holdings, prefer `减持`, not a broader ownership label.
+11. If the two entity strings are essentially the same entity, brand alias, abbreviation, or self-reference, prefer the dataset's self/alias-style label rather than free wording.
+12. If the text says one entity owns or has another entity, prefer the dataset relation label that matches ownership directly, not a vague hierarchy term unless the text clearly states affiliation.
+
+Output strict JSON only:
+{{
+  "reasoning": "Goal: ...\nEvidence: ...\nCheck: ...",
+  "final_answer": "..."
+}}

@@ -1,0 +1,38 @@
+You are generating a distilled supervision sample for FinCUGE-Instruction.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: fincuge_instruction
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+- Upstream task id: {raw_task_name}
+- Upstream task description: {raw_task_desc}
+
+Instruction:
+{question}
+
+Additional context:
+{context_block}
+
+Requirements:
+1. This route is for closed-label tasks. Answer in Chinese.
+2. In reasoning, use this order:
+   - Goal: identify the exact label inventory or canonical output style required by the task.
+   - Evidence: locate the words or facts in the text that support the target label.
+   - Check: verify that final_answer is exactly one canonical dataset-style label string unless the instruction explicitly requires more.
+3. final_answer must be minimal. Do not output explanation, chains, arrows, or multiple clauses.
+
+Task-specific rules:
+4. If the upstream task is `FINFE`, final_answer must be exactly one of: `积极` / `消极` / `中性`.
+5. If the upstream task is `FINNL`, choose the single best category by default. Use the dataset category wording exactly and do not append extra categories.
+6. If the upstream task is `FINRE`, output the exact relation label in dataset style. Do not paraphrase to a near-synonym.
+7. If the upstream task is `FINCQA`, output only the canonical causal-event label string. Do not output a natural-language causal explanation or multiple event chains.
+8. If the text indicates that no specified event exists, return the dataset-style negative label directly rather than listing nearby facts.
+9. Prefer copying the dataset label form exactly when it is evident from the task pattern.
+
+Output strict JSON only:
+{{
+  "reasoning": "Goal: ...\nEvidence: ...\nCheck: ...",
+  "final_answer": "..."
+}}

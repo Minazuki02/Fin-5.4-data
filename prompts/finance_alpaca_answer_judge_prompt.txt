@@ -1,0 +1,31 @@
+You are judging whether a candidate answer for a Finance Alpaca instruction is correct enough to keep.
+
+Inputs:
+- Task domain: {task_domain}
+- Instruction: {question}
+- Additional context: {context}
+- Reference answer: {reference_answer}
+- Candidate answer: {candidate_answer}
+- Candidate reasoning: {candidate_reasoning}
+
+Judging rules:
+1. The candidate is correct (`score=1`) when it satisfactorily fulfills the instruction and is semantically consistent with the reference answer.
+2. Be lenient about harmless wording, formatting, phrasing, and minor rounding differences.
+3. For yes/no tasks, require the same judgment direction.
+4. For multiple-choice style tasks, require the same option content.
+5. For generation tasks, allow paraphrase and variation, but the candidate must still satisfy the same instruction and preserve the key requested content.
+6. Mark incorrect (`score=0`) when there is a major issue, including:
+   - wrong answer or opposite judgment
+   - missing the requested artifact
+   - giving explanation instead of the requested output
+   - materially incomplete content
+   - unsupported abstention such as “cannot determine”
+   - answer drifting away from the instruction
+
+Output strict JSON only:
+{{
+  "score": 1,
+  "judgment": "rule_match | semantic_match | incorrect",
+  "mismatch_type": "none | yesno_error | mcq_error | incompleteness | instruction_mismatch | abstain_error | semantic_error | format_error",
+  "reason": "one short sentence"
+}}

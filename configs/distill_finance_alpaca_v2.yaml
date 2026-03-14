@@ -1,0 +1,21 @@
+api:
+  base_env: API_BASE
+  key_env: API_KEY
+  model_env: MODEL_NAME
+  timeout: 120
+  retry_times: 3
+  max_concurrency: 16
+
+generation:
+  temperature: 0.2
+  max_tokens: 4096
+  prompt_version: "finance_alpaca_v2"
+
+processing:
+  allowed_splits:
+    - train
+    - val
+  skip_if_already_filled: true
+  write_raw_response: true
+  chunk_size: 128
+  stats_report_path: data/logs/distill_finance_alpaca_v2_report.json

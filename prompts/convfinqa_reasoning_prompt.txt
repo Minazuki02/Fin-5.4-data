@@ -1,0 +1,49 @@
+You are producing distilled supervision for ConvFinQA, a multi-turn financial table-and-text reasoning task.
+
+Task information:
+- Prompt version: {prompt_version}
+- Dataset: ConvFinQA
+- Task type: {task_type}
+- Task domain: {task_domain}
+- Language: {language}
+
+Current question:
+{question}
+
+Primary context:
+{context_block}
+
+Relevant metadata and dialogue state:
+{metadata_block}
+
+Instructions:
+1. This is a multi-turn financial reasoning problem. Answer only the current turn. Use prior turns only when they are needed to resolve references in the current question.
+2. Use only evidence supported by the provided table/text/metadata. If the answer can be derived, do not answer "cannot be determined".
+3. Write reasoning in this order:
+   - Evidence: cite the exact values or facts used for the current turn.
+   - Derivation/Calculation: show the arithmetic or comparison for the current turn.
+   - Check: verify the sign, percentage/decimal form, units, and that the result answers the current turn.
+   - Conclusion: state the final result in one short sentence.
+4. If the answer is numeric:
+   - keep the sign correct
+   - treat numbers in parentheses as negative when appropriate
+   - use "%" only when the question asks for a percentage, percent, rate, share, or proportion
+   - otherwise return a plain numeric answer or the shortest necessary label
+5. final_answer must be very short. Output only the final value, label, or yes/no answer. Do not include explanation, derivation, units unless required by the question, or multiple alternatives.
+6. Before finalizing, self-check:
+   - Does final_answer match the last step of the reasoning?
+   - Is the sign correct?
+   - Is the percentage/decimal format correct?
+   - Does it answer the current turn rather than an earlier turn?
+7. Only if the provided evidence truly cannot support the answer, you may output "cannot be determined".
+
+Output requirements:
+- Return strict JSON only.
+- Do not output markdown.
+- Do not output any extra keys.
+
+Required JSON format:
+{{
+  "reasoning": "Evidence: ...\nDerivation/Calculation: ...\nCheck: ...\nConclusion: ...",
+  "final_answer": "..."
+}}
