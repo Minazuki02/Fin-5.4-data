@@ -7,7 +7,10 @@ This repository contains the complete data construction pipeline for building tr
 
 本仓库包含金融推理模型训练数据的完整构建流水线。由于 Fin-R1 的代码和训练数据未开源，本项目使用 7 个开源金融数据集从零复现其数据构建方法，采用 GPT-5.4 推理链蒸馏、逐数据集 Prompt 迭代优化，以及两阶段质量过滤。
 
----
+
+COT数据集下载链接
+链接：https://pan.quark.cn/s/0b313b680796
+提取码：i667
 
 ## Pipeline Architecture / 流水线架构
 
